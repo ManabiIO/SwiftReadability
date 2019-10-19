@@ -191,7 +191,7 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
         } catch {
             fatalError("Couldn't load readability_initialization.template.js")
         }
-        readabilityInitializationJS = readabilityInitializationJS.replacingOccurrences(of: "##MEANINGFUL_CONTENT_MIN_LENGTH##", with: String(meaningfulContentMinLength))
+        readabilityInitializationJS = readabilityInitializationJS.replacingOccurrences(of: "##CHAR_THRESHOLD##", with: String(meaningfulContentMinLength))
         
         webView.evaluateJavaScript(readabilityInitializationJS) { [weak self] (result, error) in
             let parseError = ReadabilityError.unableToParseScriptResult(rawResult: result as? String)
