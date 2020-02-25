@@ -173,8 +173,8 @@
 		FA4B8FDB1EF60D83005AB3C8 /* SwiftReadabilityExample */ = {
 			isa = PBXGroup;
 			children = (
-				FA4B8FDC1EF60D83005AB3C8 /* AppDelegate.swift */,
 				FA4B8FDE1EF60D83005AB3C8 /* ViewController.swift */,
+				FA4B8FDC1EF60D83005AB3C8 /* AppDelegate.swift */,
 				FA4B8FE01EF60D83005AB3C8 /* Main.storyboard */,
 				FA4B8FE31EF60D83005AB3C8 /* Assets.xcassets */,
 				FA4B8FE51EF60D83005AB3C8 /* LaunchScreen.storyboard */,
