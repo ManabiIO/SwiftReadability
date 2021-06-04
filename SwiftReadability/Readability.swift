@@ -76,13 +76,14 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
         addReadabilityUserScript()
     }
     
-    public convenience init(url: URL, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil) {
+    public convenience init(url: URL, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Float = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil) {
         
         self.init(
             conversionTime: conversionTime,
             suppressSubresourceLoadingDuringConversion: suppressSubresourceLoadingDuringConversion,
             meaningfulContentMinLength: meaningfulContentMinLength,
             sentryDsn: sentryDsn,
+            sentryTracesSampleRate: sentryTracesSampleRate,
             completionHandler: completionHandler,
             progressCallback: progressCallback,
             contentRulesAddedCallback: { webView in
@@ -90,13 +91,14 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
             })
     }
     
-    public convenience init(html: String, baseUrl: URL? = nil, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void) {
+    public convenience init(html: String, baseUrl: URL? = nil, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Float = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void) {
         
         self.init(
             conversionTime: conversionTime,
             suppressSubresourceLoadingDuringConversion: suppressSubresourceLoadingDuringConversion,
             meaningfulContentMinLength: meaningfulContentMinLength,
             sentryDsn: sentryDsn,
+            sentryTracesSampleRate: sentryTracesSampleRate,
             completionHandler: completionHandler,
             contentRulesAddedCallback: { webView in
                 webView.loadHTMLString(html, baseURL: baseUrl)
