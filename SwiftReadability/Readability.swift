@@ -34,14 +34,16 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
     private let suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType
     private var allowNavigationFailures = 0
     private let meaningfulContentMinLength: Int
+    
     private let sentryDsn: String?
+    private let sentryTracesSampleRate: Float
     
     fileprivate var progressCallback: ((_ estimatedProgress: Double) -> Void)?
     fileprivate var downloadBuffer = Data()
     fileprivate var expectedContentLength = 0
     fileprivate var htmlDownloadCompletionHandler: ((String?, Error?) -> Void)?
     
-    public init(conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil, contentRulesAddedCallback: ((WKWebView) -> Void)? = nil) {
+    public init(conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Float = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil, contentRulesAddedCallback: ((WKWebView) -> Void)? = nil) {
         let webView = WKWebView(frame: CGRect.zero, configuration: WKWebViewConfiguration())
         
         func completionHandlerWrapper(_ content: String?, _ error: Error?) {
@@ -165,19 +167,19 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
             if let sentryDsn = sentryDsn {
                 sentryScript = """
                     <script
-                      src="https://browser.sentry-cdn.com/6.2.5/bundle.min.js"
-                      integrity="sha384-+0tgGyP4idWu9/NA6Jbmnj3SApxIg65/GR1zo3qSieRNyzmmDQ/5a1Yu6mfmUw+v"
+                      src="https://browser.sentry-cdn.com/6.5.1/bundle.min.js"
+                      integrity="sha384-4+IdsjFHpxfo2PQYne6sV0ulAlOJbJHbeEy4vDPAt9kUmUb9t0W2HFp6I6rznkEP"
                       crossorigin="anonymous"
                     ></script>
                     <script>
                         Sentry.init({
                           dsn: "\(sentryDsn)",
                           /*release: "TODO@" + process.env.npm_package_version,*/
-                          integrations: [new Sentry.Integrations.BrowserTracing()],
+                          integrations: [], //new Sentry.Integrations.BrowserTracing()],
 
                           // We recommend adjusting this value in production, or using tracesSampler
                           // for finer control
-                          tracesSampleRate: 0.05,
+                          tracesSampleRate: \(String(describing: sentryTracesSampleRate)),
                         });
                     </script>
                 """
