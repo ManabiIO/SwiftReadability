@@ -36,14 +36,14 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
     private let meaningfulContentMinLength: Int
     
     private let sentryDsn: String?
-    private let sentryTracesSampleRate: Float
+    private let sentryTracesSampleRate: Double
     
     fileprivate var progressCallback: ((_ estimatedProgress: Double) -> Void)?
     fileprivate var downloadBuffer = Data()
     fileprivate var expectedContentLength = 0
     fileprivate var htmlDownloadCompletionHandler: ((String?, Error?) -> Void)?
     
-    public init(conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Float = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil, contentRulesAddedCallback: ((WKWebView) -> Void)? = nil) {
+    public init(conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Double = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil, contentRulesAddedCallback: ((WKWebView) -> Void)? = nil) {
         let webView = WKWebView(frame: CGRect.zero, configuration: WKWebViewConfiguration())
         
         func completionHandlerWrapper(_ content: String?, _ error: Error?) {
@@ -76,7 +76,7 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
         addReadabilityUserScript()
     }
     
-    public convenience init(url: URL, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Float = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil) {
+    public convenience init(url: URL, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Double = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void, progressCallback: ((_ estimatedProgress: Double) -> Void)? = nil) {
         
         self.init(
             conversionTime: conversionTime,
@@ -91,7 +91,7 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
             })
     }
     
-    public convenience init(html: String, baseUrl: URL? = nil, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Float = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void) {
+    public convenience init(html: String, baseUrl: URL? = nil, conversionTime: ReadabilityConversionTime = .atDocumentEnd, suppressSubresourceLoadingDuringConversion: ReadabilitySubresourceSuppressionType = .none, meaningfulContentMinLength: Int? = nil, sentryDsn: String? = nil, sentryTracesSampleRate: Double = 0.05, completionHandler: @escaping (_ content: String?, _ error: Error?) -> Void) {
         
         self.init(
             conversionTime: conversionTime,
