@@ -60,6 +60,7 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
         self.suppressSubresourceLoadingDuringConversion = suppressSubresourceLoadingDuringConversion
         self.meaningfulContentMinLength = meaningfulContentMinLength ?? 250
         self.sentryDsn = sentryDsn
+        self.sentryTracesSampleRate = sentryTracesSampleRate
         self.webView = webView
         
         super.init()
