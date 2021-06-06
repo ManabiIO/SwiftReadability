@@ -240,26 +240,13 @@ public class Readability: NSObject, WKNavigationDelegate, WKScriptMessageHandler
     private func rawPageFinishedLoading() {
         isRenderingReadabilityHTML = true
         
-        // Fix https://github.com/mozilla/readability/issues/575
-        let stripRubyJs = """
-        for (let tag of ['rp', 'rt', 'rtc']) {
-            var rubyInnerNodes = document.getElementsByTagName(tag)
-            while (rubyInnerNodes[0]) {
-                rubyInnerNodes[0].parentNode.removeChild(rubyInnerNodes[0])
+        initializeReadability() { [weak self] (html: String?, error: Error?) in
+            self?.isRenderingReadabilityHTML = false
+            guard let html = html else {
+                self?.completionHandler(nil, error)
+                return
             }
-        }
-        """
-        webView.evaluateJavaScript(stripRubyJs) { [weak self] result, error in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.initializeReadability() { [weak self] (html: String?, error: Error?) in
-                self?.isRenderingReadabilityHTML = false
-                guard let html = html else {
-                    self?.completionHandler(nil, error)
-                    return
-                }
-                self?.completionHandler(html, nil)
-            }
-            }
+            self?.completionHandler(html, nil)
         }
     }
     
